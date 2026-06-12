@@ -50,9 +50,9 @@ button {
 }
 
 .app-shell {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
-  padding: 18px 0 28px;
+  padding: 14px 0 28px;
 }
 
 .topbar {
@@ -148,11 +148,11 @@ button {
 }
 
 .stat-block {
-  min-height: 78px;
+  min-height: 62px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.8);
-  padding: 14px;
+  padding: 11px 12px;
 }
 
 .stat-value {
@@ -164,7 +164,7 @@ button {
 
 .stat-label {
   display: block;
-  margin-top: 8px;
+  margin-top: 6px;
   color: var(--muted);
   font-size: 0.82rem;
 }
@@ -178,7 +178,7 @@ button {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -200,11 +200,32 @@ button {
   overflow: hidden;
 }
 
+.deck-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.deck-heading strong {
+  white-space: nowrap;
+}
+
+.deck-heading span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .search-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 8px;
-  padding: 12px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -230,7 +251,7 @@ button {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -372,7 +393,7 @@ button {
 }
 
 .study-panel {
-  min-height: 680px;
+  min-height: 620px;
   padding: 14px;
 }
 
@@ -397,7 +418,7 @@ button {
 }
 
 .entry-card {
-  padding: 12px 4px 6px;
+  padding: 6px 4px 6px;
 }
 
 .term-row {
@@ -744,12 +765,13 @@ button {
 
 @media (max-width: 860px) {
   .app-shell {
-    width: min(100% - 20px, 720px);
-    padding-top: 12px;
+    width: min(100% - 16px, 720px);
+    padding-top: 8px;
   }
 
   .topbar {
     align-items: flex-start;
+    padding-bottom: 8px;
   }
 
   .brand h1 {
@@ -757,27 +779,67 @@ button {
   }
 
   .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .stat-block {
+    min-height: 52px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 1.14rem;
+  }
+
+  .stat-label {
+    margin-top: 4px;
+    font-size: 0.72rem;
+  }
+
+  .save-note {
+    margin-bottom: 10px;
+    font-size: 0.75rem;
   }
 
   .workspace {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .deck-panel {
+    order: 2;
     position: static;
-    max-height: 42vh;
+    width: 100%;
+    max-height: 34vh;
   }
 
   .study-panel {
+    order: 1;
+    width: 100%;
     min-height: 0;
     padding: 12px;
+  }
+
+  .deck-heading {
+    padding: 10px 12px 8px;
+  }
+
+  .study-toolbar {
+    margin-bottom: 10px;
+  }
+
+  #termText {
+    font-size: clamp(2rem, 12vw, 3.2rem);
   }
 }
 
 @media (max-width: 520px) {
   .app-shell {
-    width: calc(100% - 14px);
+    width: calc(100% - 12px);
   }
 
   .brand-mark {
@@ -795,16 +857,36 @@ button {
   }
 
   .stat-block {
-    min-height: 70px;
-    padding: 12px;
+    min-height: 50px;
+    padding: 7px 4px;
   }
 
   .tabs {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .deck-heading {
+    display: grid;
+    gap: 3px;
+  }
+
+  .deck-heading span {
+    white-space: normal;
+  }
+
   .review-actions {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .review-button {
+    min-height: 58px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+
+  .review-button small {
+    font-size: 0.68rem;
   }
 
   .quiz-head {
