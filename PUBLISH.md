@@ -1,9 +1,9 @@
 # GitHub Pages でスマホから使う
 
-GitHub ユーザー名が `kahadu` の場合、リポジトリ名を `gachi-vocab` にすると公開URLは次の形になります。
+GitHub ユーザー名が `kahadu1020` の場合、リポジトリ名を `gachi-vocab` にすると公開URLは次の形になります。
 
 ```text
-https://kahadu.github.io/gachi-vocab/
+https://kahadu1020.github.io/gachi-vocab/
 ```
 
 ## ブラウザだけで公開する手順
@@ -28,7 +28,7 @@ https://kahadu.github.io/gachi-vocab/
 5. `Settings` → `Pages` を開きます。
 6. `Build and deployment` の Source を `Deploy from a branch` にします。
 7. Branch を `main`、フォルダを `/root` にして `Save` します。
-8. 数分待つと `https://kahadu.github.io/gachi-vocab/` で開けます。
+8. 数分待つと `https://kahadu1020.github.io/gachi-vocab/` で開けます。
 
 ## スマホに入れる
 
