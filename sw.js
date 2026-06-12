@@ -1,4 +1,4 @@
-const CACHE_NAME = "gachi-vocab-v8";
+const CACHE_NAME = "gachi-vocab-v9";
 const ASSETS = [
   "./",
   "./index.html",
