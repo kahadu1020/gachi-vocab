@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ガチ英単語">
+  <rect width="128" height="128" rx="24" fill="#155e63"/>
+  <path d="M28 36c0-6.6 5.4-12 12-12h51c5 0 9 4 9 9v62c0 5-4 9-9 9H40c-6.6 0-12-5.4-12-12V36Z" fill="#fbfaf6"/>
+  <path d="M42 25v78" stroke="#d6e6df" stroke-width="7"/>
+  <path d="M54 47h34M54 64h27M54 81h34" stroke="#155e63" stroke-width="7" stroke-linecap="round"/>
+  <path d="M92 34v25l-9-6-9 6V34" fill="#f2b84b"/>
+</svg>
