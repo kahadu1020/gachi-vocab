@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#155e63" />
+    <title>ガチ英単語</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="./icon.svg" alt="" />
+          <div>
+            <h1>ガチ英単語</h1>
+            <p id="deckStatus">頻出会話順デッキ</p>
+          </div>
+        </div>
+        <div class="top-actions" aria-label="操作">
+          <button class="icon-button" id="speakButton" type="button" title="発音を聞く" aria-label="発音を聞く">
+            <span aria-hidden="true">♪</span>
+          </button>
+          <button class="icon-button" id="exportButton" type="button" title="進捗を書き出す" aria-label="進捗を書き出す">
+            <span aria-hidden="true">⇩</span>
+          </button>
+          <label class="icon-button import-label" title="進捗を読み込む" aria-label="進捗を読み込む">
+            <input id="importInput" type="file" accept="application/json" />
+            <span aria-hidden="true">⇧</span>
+          </label>
+        </div>
+      </header>
+
+      <section class="stats-grid" aria-label="進捗">
+        <div class="stat-block">
+          <span class="stat-value" id="learnedCount">0</span>
+          <span class="stat-label">学習済み</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value" id="dueCount">0</span>
+          <span class="stat-label">復習</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value" id="masteredCount">0</span>
+          <span class="stat-label">定着</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value" id="streakCount">0</span>
+          <span class="stat-label">連続</span>
+        </div>
+      </section>
+      <p class="save-note">進捗はこのブラウザ内に保存されます。サイトデータを消す前に ⇩ でバックアップできます。</p>
+
+      <main class="workspace">
+        <aside class="deck-panel" aria-label="単語リスト">
+          <div class="search-row">
+            <input id="searchInput" type="search" placeholder="検索" autocomplete="off" />
+            <button id="nextNewButton" class="compact-button" type="button">次へ</button>
+          </div>
+          <div class="tabs" role="tablist" aria-label="表示">
+            <button class="tab is-active" type="button" data-filter="all">順番</button>
+            <button class="tab" type="button" data-filter="new">未学習</button>
+            <button class="tab" type="button" data-filter="due">復習</button>
+            <button class="tab" type="button" data-filter="mastered">定着</button>
+            <button class="tab" type="button" data-filter="phrase">熟語</button>
+          </div>
+          <div class="list-meta" id="listMeta">0件</div>
+          <ol class="entry-list" id="entryList"></ol>
+        </aside>
+
+        <section class="study-panel" aria-live="polite">
+          <div class="study-toolbar">
+            <button class="icon-button" id="previousButton" type="button" title="前" aria-label="前">
+              <span aria-hidden="true">←</span>
+            </button>
+            <div class="rank-pill" id="rankPill">#1</div>
+            <button class="icon-button" id="nextButton" type="button" title="次" aria-label="次">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          <div class="mode-switch" role="tablist" aria-label="学習モード">
+            <button class="mode-button is-active" id="studyModeButton" type="button">学習</button>
+            <button class="mode-button" id="quizModeButton" type="button">テスト</button>
+          </div>
+
+          <article class="entry-card" id="studyCard">
+            <div class="term-row">
+              <div>
+                <div class="kind-line" id="kindLine">word</div>
+                <h2 id="termText">the</h2>
+              </div>
+              <button class="sound-button" id="cardSpeakButton" type="button">
+                <span aria-hidden="true">♪</span>
+                <span>発音</span>
+              </button>
+            </div>
+            <div class="pronunciation" id="ipaText">/ðə/</div>
+
+            <div class="meaning-strip" id="meaningStrip"></div>
+
+            <section class="core-box">
+              <h3>コア</h3>
+              <p id="coreText"></p>
+            </section>
+
+            <section class="detail-section">
+              <h3>使い方</h3>
+              <ul id="usageList"></ul>
+            </section>
+
+            <section class="detail-section">
+              <h3>例文</h3>
+              <div class="examples" id="examples"></div>
+            </section>
+
+            <section class="detail-section" id="chunkSection">
+              <h3>よく出る形</h3>
+              <div class="chunk-list" id="chunkList"></div>
+            </section>
+          </article>
+
+          <div class="review-actions" id="reviewActions" aria-label="復習結果">
+            <button class="review-button miss" id="againButton" type="button">
+              <span>あいまい</span>
+              <small>短く戻す</small>
+            </button>
+            <button class="review-button good" id="goodButton" type="button">
+              <span>わかった</span>
+              <small>間隔を延ばす</small>
+            </button>
+            <button class="review-button mastered" id="masteredButton" type="button">
+              <span>覚えた</span>
+              <small>定着へ</small>
+            </button>
+          </div>
+
+          <section class="quiz-panel" id="quizPanel" hidden>
+            <div class="quiz-head">
+              <div>
+                <div class="kind-line" id="quizKindLine">確認テスト</div>
+                <h2 id="quizPromptTitle">意味から英語を選ぶ</h2>
+              </div>
+              <button class="compact-button" id="nextQuizButton" type="button">次問</button>
+            </div>
+
+            <div class="quiz-direction" role="tablist" aria-label="テスト形式">
+              <button class="mode-button is-active" id="meaningToTermButton" type="button">意味→英語</button>
+              <button class="mode-button" id="termToMeaningButton" type="button">英語→意味</button>
+              <button class="mode-button" id="exampleClozeButton" type="button">例文→英語</button>
+            </div>
+
+            <div class="quiz-meta" id="quizMeta">#1</div>
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-feedback" id="quizFeedback" aria-live="polite"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
