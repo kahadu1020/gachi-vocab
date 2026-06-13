@@ -47,6 +47,7 @@
     meaningToTermButton: document.getElementById("meaningToTermButton"),
     termToMeaningButton: document.getElementById("termToMeaningButton"),
     exampleClozeButton: document.getElementById("exampleClozeButton"),
+    listenToMeaningButton: document.getElementById("listenToMeaningButton"),
     quizMeta: document.getElementById("quizMeta"),
     quizQuestion: document.getElementById("quizQuestion"),
     quizOptions: document.getElementById("quizOptions"),
@@ -109,7 +110,14 @@
   els.meaningToTermButton.addEventListener("click", () => setQuizDirection("meaning-to-term"));
   els.termToMeaningButton.addEventListener("click", () => setQuizDirection("term-to-meaning"));
   els.exampleClozeButton.addEventListener("click", () => setQuizDirection("example-cloze"));
+  els.listenToMeaningButton.addEventListener("click", () => setQuizDirection("listen-to-meaning"));
   els.nextQuizButton.addEventListener("click", nextQuizQuestion);
+  els.quizQuestion.addEventListener("click", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-quiz-speak]") : null;
+    if (!button) return;
+    const entry = findEntry(quiz?.entryId);
+    if (entry) speakEntry(entry);
+  });
   els.quizOptions.addEventListener("click", (event) => {
     const option = event.target.closest("[data-choice-id]");
     if (!option) return;
@@ -280,6 +288,7 @@
     els.meaningToTermButton.classList.toggle("is-active", quizDirection === "meaning-to-term");
     els.termToMeaningButton.classList.toggle("is-active", quizDirection === "term-to-meaning");
     els.exampleClozeButton.classList.toggle("is-active", quizDirection === "example-cloze");
+    els.listenToMeaningButton.classList.toggle("is-active", quizDirection === "listen-to-meaning");
   }
 
   function renderList() {
@@ -374,11 +383,16 @@
       ...quiz.choiceIds.map((choiceId, index) => buildQuizOption(findEntry(choiceId), index, direction)),
     );
     renderQuizFeedback(entry);
+    if (direction === "listen-to-meaning" && !quiz.answeredId && !quiz.spoken) {
+      quiz.spoken = true;
+      requestAnimationFrame(() => speakEntry(entry, { silent: true }));
+    }
   }
 
   function getQuizTitle(direction) {
     if (direction === "term-to-meaning") return "英語から意味を選ぶ";
     if (direction === "example-cloze") return "例文から英語を選ぶ";
+    if (direction === "listen-to-meaning") return "音声から意味を選ぶ";
     return "意味から英語を選ぶ";
   }
 
@@ -394,6 +408,15 @@
     } else if (direction === "term-to-meaning") {
       title.textContent = entry.term;
       detail.textContent = `${entry.ipa}・${entry.examples[0][0]}`;
+    } else if (direction === "listen-to-meaning") {
+      title.textContent = "音声";
+      const replayButton = document.createElement("button");
+      replayButton.className = "sound-button quiz-sound-button";
+      replayButton.type = "button";
+      replayButton.dataset.quizSpeak = "true";
+      replayButton.innerHTML = '<span aria-hidden="true">♪</span><span>もう一度聞く</span>';
+      block.append(title, replayButton);
+      return block;
     } else {
       const example = getClozeExample(entry);
       title.className = "quiz-example";
@@ -588,6 +611,7 @@
       choiceIds: shuffle([target, ...distractors]).map((entry) => entry.id),
       answeredId: "",
       correct: false,
+      spoken: false,
     };
     selectedId = target.id;
     state.selectedId = selectedId;
@@ -630,7 +654,12 @@
 
   function speakSelected() {
     const entry = entries.find((item) => item.id === selectedId);
+    speakEntry(entry);
+  }
+
+  function speakEntry(entry, options = {}) {
     if (!entry || !("speechSynthesis" in window)) {
+      if (options.silent) return;
       showToast("このブラウザでは音声読み上げを使えません");
       return;
     }
