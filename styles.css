@@ -612,7 +612,7 @@ button {
 
 .quiz-direction {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
   margin-top: 16px;
 }
@@ -647,6 +647,11 @@ button {
 .quiz-focus p {
   margin: 8px 0 0;
   line-height: 1.62;
+}
+
+.quiz-sound-button {
+  width: fit-content;
+  margin-top: 12px;
 }
 
 .quiz-example {
